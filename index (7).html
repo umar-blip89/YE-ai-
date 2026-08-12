@@ -1,0 +1,928 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Работа курьером — набор в команду</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+        :root {
+            --ink: #14181C;
+            --paper: #F6F5F1;
+            --paper2: #ECEAE3;
+            --signal: #FFCC00;
+            --lime: #FFDB4D;
+            --gold-text: #A87B00;
+            --steel: #5B6470;
+            --line: #D8D5CC;
+            --white: #FFFFFF;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--paper);
+            color: var(--ink);
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        h1,
+        h2,
+        h3,
+        .disp {
+            font-family: 'Oswald', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.01em;
+            line-height: 0.95;
+        }
+
+        .mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .wrap {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ===== HEADER ===== */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: var(--paper);
+            border-bottom: 1px solid var(--line);
+        }
+
+        /* ===== SUPPORT BUTTON ===== */
+        .support-btn {
+            position: fixed;
+            right: 24px;
+            bottom: 24px;
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 20px;
+            background: var(--signal);
+            color: var(--ink);
+            border-radius: 999px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 15px;
+            box-shadow: 0 8px 24px rgba(20, 24, 28, 0.22);
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .support-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(20, 24, 28, 0.28);
+        }
+
+        .support-btn svg {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 640px) {
+            .support-btn {
+                right: 16px;
+                bottom: 16px;
+                padding: 12px 16px;
+                font-size: 14px;
+            }
+            .support-btn span {
+                display: none;
+            }
+        }
+
+        .header-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 24px;
+            max-width: 1120px;
+            margin: 0 auto;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Oswald', sans-serif;
+            font-weight: 700;
+            font-size: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+
+        .logo-mark {
+            width: 30px;
+            height: 30px;
+            background: var(--signal);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .logo-mark svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .city-tabs {
+            display: flex;
+            gap: 4px;
+            background: var(--paper2);
+            padding: 4px;
+            border-radius: 999px;
+        }
+
+        .city-tab {
+            padding: 8px 16px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--steel);
+            cursor: pointer;
+            transition: all .25s ease;
+            border: none;
+            background: none;
+            font-family: 'Inter', sans-serif;
+            white-space: nowrap;
+        }
+
+        .city-tab.active {
+            background: var(--ink);
+            color: var(--paper);
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            padding: 64px 0 40px;
+            position: relative;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 48px;
+            align-items: center;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--steel);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 20px;
+        }
+
+        .eyebrow::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--signal);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: .3;
+            }
+        }
+
+        .hero h1 {
+            font-size: 56px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 .accent {
+            color: var(--gold-text);
+        }
+
+        .hero p.lead {
+            font-size: 17px;
+            color: var(--steel);
+            max-width: 460px;
+            margin-bottom: 32px;
+            line-height: 1.5;
+        }
+
+        .cta-row {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: var(--ink);
+            color: var(--paper);
+            padding: 16px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 15px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            border: none;
+            cursor: pointer;
+            transition: transform .15s ease, background .15s ease;
+        }
+
+        .btn-primary:hover {
+            background: var(--signal);
+            color: var(--ink);
+            transform: translateY(-2px);
+        }
+
+        .btn-arrow {
+            transition: transform .15s ease;
+        }
+
+        .btn-primary:hover .btn-arrow {
+            transform: translateX(4px);
+        }
+
+        .cta-note {
+            font-size: 13px;
+            color: var(--steel);
+        }
+
+
+        /* route card */
+        .route-card {
+            background: var(--ink);
+            border-radius: 20px;
+            padding: 32px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .route-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 80% 0%, rgba(200, 255, 61, 0.12), transparent 60%);
+        }
+
+        .route-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--lime);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 8px;
+        }
+
+        .route-city {
+            color: var(--paper);
+            font-family: 'Oswald', sans-serif;
+            font-size: 26px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+        }
+
+        .route-line {
+            width: 100%;
+            height: 60px;
+            margin-bottom: 20px;
+        }
+
+        .stat-block {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-top: 1px solid rgba(255, 255, 255, 0.12);
+            padding-top: 20px;
+        }
+
+        .stat-num {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 38px;
+            font-weight: 700;
+            color: var(--white);
+            line-height: 1;
+        }
+
+        .stat-num .unit {
+            font-size: 16px;
+            color: var(--lime);
+            margin-left: 4px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.55);
+            margin-top: 6px;
+        }
+
+        /* ===== SECTION HEADER ===== */
+        .section {
+            padding: 64px 0;
+        }
+
+        .section-head {
+            margin-bottom: 40px;
+            max-width: 560px;
+        }
+
+        .section-eyebrow {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--gold-text);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 10px;
+        }
+
+        .section h2 {
+            font-size: 32px;
+            font-weight: 600;
+        }
+
+        /* ===== STEPS ===== */
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background: var(--line);
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .step {
+            background: var(--paper);
+            padding: 32px 24px;
+            position: relative;
+        }
+
+        .step-num {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: var(--gold-text);
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .step h3 {
+            font-size: 19px;
+            font-weight: 600;
+            text-transform: none;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 8px;
+        }
+
+        .step p {
+            font-size: 14px;
+            color: var(--steel);
+            line-height: 1.5;
+        }
+
+        /* ===== BONUS TRACKER ===== */
+        .bonus-section {
+            background: var(--ink);
+            border-radius: 24px;
+            padding: 48px;
+            color: var(--paper);
+        }
+
+        .bonus-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .bonus-top h2 {
+            color: var(--paper);
+            font-size: 28px;
+        }
+
+        .bonus-badge {
+            background: var(--lime);
+            color: var(--ink);
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .track-wrap {
+            margin-bottom: 12px;
+        }
+
+        .track-labels {
+            display: flex;
+            justify-content: space-between;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 8px;
+        }
+
+        .track {
+            width: 100%;
+            height: 14px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 999px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .track-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--signal), var(--lime));
+            border-radius: 999px;
+            width: 0%;
+            transition: width 1.2s cubic-bezier(.22, 1, .36, 1);
+        }
+
+        .track-note {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.65);
+            margin-top: 16px;
+            max-width: 520px;
+            line-height: 1.6;
+        }
+
+        .track-note b {
+            color: var(--paper);
+        }
+
+        /* ===== BENEFITS ===== */
+        .benefits {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+
+        .benefit {
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 24px 20px;
+            background: var(--paper);
+        }
+
+        .benefit-icon {
+            width: 36px;
+            height: 36px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--paper2);
+            border-radius: 8px;
+        }
+
+        .benefit h3 {
+            font-size: 15px;
+            font-weight: 600;
+            text-transform: none;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 6px;
+        }
+
+        .benefit p {
+            font-size: 13px;
+            color: var(--steel);
+            line-height: 1.5;
+        }
+
+
+        /* ===== FAQ ===== */
+        .faq-item {
+            border-bottom: 1px solid var(--line);
+            padding: 20px 0;
+            cursor: pointer;
+        }
+
+        .faq-q {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .faq-plus {
+            font-size: 20px;
+            color: var(--gold-text);
+            transition: transform .2s ease;
+            flex-shrink: 0;
+            margin-left: 16px;
+        }
+
+        .faq-item.open .faq-plus {
+            transform: rotate(45deg);
+        }
+
+        .faq-a {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height .3s ease;
+            font-size: 14px;
+            color: var(--steel);
+            line-height: 1.6;
+        }
+
+        .faq-item.open .faq-a {
+            max-height: 200px;
+            padding-top: 12px;
+        }
+
+        /* ===== FINAL CTA ===== */
+        .final-cta {
+            background: var(--lime);
+            border-radius: 24px;
+            padding: 56px 48px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .final-cta h2 {
+            font-size: 34px;
+            margin-bottom: 12px;
+            color: var(--ink);
+        }
+
+        .final-cta p {
+            color: var(--ink);
+            opacity: 0.7;
+            margin-bottom: 28px;
+            font-size: 15px;
+        }
+
+        .final-cta .btn-primary {
+            background: var(--ink);
+            color: var(--lime);
+        }
+
+        .final-cta .btn-primary:hover {
+            background: var(--signal);
+            color: var(--ink);
+        }
+
+        footer {
+            padding: 32px 0;
+            border-top: 1px solid var(--line);
+        }
+
+        .footer-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            color: var(--steel);
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        @media (max-width:860px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 38px;
+            }
+
+            .steps {
+                grid-template-columns: 1fr;
+            }
+
+            .benefits {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .bonus-section {
+                padding: 32px 24px;
+            }
+
+            .final-cta {
+                padding: 40px 24px;
+            }
+
+            .header-inner {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .city-tabs {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="header-inner">
+            <div class="logo">
+                <div class="logo-mark">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M4 17V7a2 2 0 0 1 2-2h6l6 4v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z" stroke="#14181C"
+                            stroke-width="1.8" stroke-linejoin="round" />
+                        <path d="M12 5v6h6" stroke="#14181C" stroke-width="1.8" stroke-linejoin="round" />
+                    </svg>
+                </div>
+                Яндекс Еда · Набор курьеров
+            </div>
+            <div class="city-tabs">
+                <span class="city-tab active">Ваш город</span>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="wrap">
+            <div class="hero-grid">
+                <div>
+                    <div class="eyebrow">Набор открыт — старт в течение 1–2 дней</div>
+                    <h1>Развози заказы.<br>Получай <span class="accent">каждый день.</span></h1>
+                    <p class="lead">Свободный график, выплаты без задержек и бонус за первые 100 заказов. Работай
+                        столько, сколько удобно — от подработки до полной смены.</p>
+                    <div class="cta-row">
+                        <button class="btn-primary" onclick="scrollToForm()">
+                            Оставить заявку
+                            <svg class="btn-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </button>
+                        <span class="cta-note">Без опыта · Регистрация 5 минут</span>
+                    </div>
+                </div>
+
+                <div class="route-card">
+                    <div class="route-label">Ваш город</div>
+                    <div class="route-city" id="routeCity">—</div>
+                    <svg class="route-line" viewBox="0 0 400 60" fill="none">
+                        <path id="routePath" d="M0 45 C 80 45, 100 15, 180 15 S 280 50, 400 20" stroke="#C8FF3D"
+                            stroke-width="2" stroke-dasharray="6 6" stroke-linecap="round" />
+                        <circle cx="0" cy="45" r="5" fill="#FF4E1F" />
+                        <circle cx="400" cy="20" r="5" fill="#C8FF3D" />
+                    </svg>
+                    <div class="stat-block">
+                        <div>
+                            <div class="stat-num mono" id="statIncome">—<span class="unit">₽/день</span></div>
+                            <div class="stat-label">Ориентир при полной смене</div>
+                        </div>
+                        <div style="text-align:right">
+                            <div class="stat-num mono" id="statBonus" style="font-size:22px;">—</div>
+                            <div class="stat-label">Бонус за 100 заказов</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="wrap">
+            <div class="section-head">
+                <div class="section-eyebrow">Порядок действий</div>
+                <h2>Три шага до первой смены</h2>
+            </div>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-num mono">01</div>
+                    <h3>Оставляешь заявку</h3>
+                    <p>Заполняешь короткую форму — имя, телефон, город. Занимает меньше минуты.</p>
+                </div>
+                <div class="step">
+                    <div class="step-num mono">02</div>
+                    <h3>Проходишь регистрацию</h3>
+                    <p>Переходишь на официальную платформу, подтверждаешь данные и получаешь доступ к заказам.</p>
+                </div>
+                <div class="step">
+                    <div class="step-num mono">03</div>
+                    <h3>Берёшь первый заказ</h3>
+                    <p>Выбираешь удобное время и район — и сразу начинаешь получать заказы поблизости.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="wrap">
+            <div class="bonus-section">
+                <div class="bonus-top">
+                    <div>
+                        <div class="section-eyebrow" style="color:var(--lime)">Бонус за старт</div>
+                        <h2>100 заказов — и бонус у тебя на счету</h2>
+                    </div>
+                    <div class="bonus-badge" id="bonusBadge">45 000 ₽</div>
+                </div>
+                <div class="track-wrap">
+                    <div class="track-labels"><span>0 заказов</span><span>100 заказов</span></div>
+                    <div class="track">
+                        <div class="track-fill" id="trackFill"></div>
+                    </div>
+                </div>
+                <p class="track-note">При полной занятости курьеры в среднем закрывают <b>~25 заказов в день</b> — до
+                    бонуса можно дойти уже <b>за 4 смены</b>. Бонус приходит отдельно от оплаты за сами заказы.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="wrap">
+            <div class="section-head">
+                <div class="section-eyebrow">Условия</div>
+                <h2>Что входит в работу</h2>
+            </div>
+            <div class="benefits">
+                <div class="benefit">
+                    <div class="benefit-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                            <path d="M9 1v16M4 5h7.5a2.5 2.5 0 0 1 0 5H6.5a2.5 2.5 0 0 0 0 5H13" stroke="#14181C"
+                                stroke-width="1.6" stroke-linecap="round" />
+                        </svg></div>
+                    <h3>Ежедневные выплаты</h3>
+                    <p>Деньги приходят каждый день, без ожидания конца недели.</p>
+                </div>
+                <div class="benefit">
+                    <div class="benefit-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                            <circle cx="9" cy="9" r="7" stroke="#14181C" stroke-width="1.6" />
+                            <path d="M9 5v4l3 2" stroke="#14181C" stroke-width="1.6" stroke-linecap="round" />
+                        </svg></div>
+                    <h3>Свободный график</h3>
+                    <p>Сам решаешь, когда выходить — хоть на пару часов, хоть на полный день.</p>
+                </div>
+                <div class="benefit">
+                    <div class="benefit-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                            <path d="M9 2l6 2.5v4c0 4-2.5 6.7-6 7.5-3.5-.8-6-3.5-6-7.5v-4L9 2Z" stroke="#14181C"
+                                stroke-width="1.6" stroke-linejoin="round" />
+                        </svg></div>
+                    <h3>Страхование на смене</h3>
+                    <p>Действует на время выполнения заказов.</p>
+                </div>
+                <div class="benefit">
+                    <div class="benefit-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                            <path d="M3 9c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="#14181C" stroke-width="1.6"
+                                stroke-linecap="round" />
+                            <rect x="2" y="9" width="3" height="5" rx="1" stroke="#14181C" stroke-width="1.6" />
+                            <rect x="13" y="9" width="3" height="5" rx="1" stroke="#14181C" stroke-width="1.6" />
+                        </svg></div>
+                    <h3>Поддержка на связи</h3>
+                    <p>Помогаем с вопросами по регистрации и первым заказам.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="wrap">
+            <div class="section-head">
+                <div class="section-eyebrow">Вопросы</div>
+                <h2>Коротко о главном</h2>
+            </div>
+            <div id="faqList">
+                <div class="faq-item">
+                    <div class="faq-q">Сколько можно заработать?<span class="faq-plus">+</span></div>
+                    <div class="faq-a">Доход зависит от количества смен и заказов. Ориентир при полной занятости указан
+                        выше для твоего города.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-q">Нужен ли опыт?<span class="faq-plus">+</span></div>
+                    <div class="faq-a">Нет, всё расскажем на инструктаже перед первой сменой.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-q">Как быстро выплачивают бонус?<span class="faq-plus">+</span></div>
+                    <div class="faq-a">После выполнения 100-го заказа — в ближайшую выплату.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-q">Можно ли работать неполный день?<span class="faq-plus">+</span></div>
+                    <div class="faq-a">Да, график свободный — берёшь смены, когда удобно.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="formSection">
+        <div class="wrap">
+            <div class="final-cta">
+                <h2>Готов выйти на первую смену?</h2>
+                <p>Заявка занимает меньше минуты — дальше поможем с оформлением.</p>
+                <button class="btn-primary" onclick="goToRegistration()">
+                    Перейти к регистрации
+                    <svg class="btn-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="wrap footer-inner" style="justify-content: center; text-align: center;">
+            <span>© 2026 Яндекс Еда · Партнёрская программа</span>
+        </div>
+    </footer>
+
+    <script>
+        /* ====== КОНФИГ: правь тут ====== */
+        const OFFER = {
+            name: "Ваш город",
+            income: "8000",
+            bonus: "45 000",
+            progress: 48,
+            link: "https://reg.eda.yandex.ru/?advertisement_campaign=forms_for_agents&user_invite_code=0bf0c3dd6aae4b6bb5dfc84e0c133ea5&utm_content=blank"
+        };
+        /* ================================ */
+
+        function applyOffer() {
+            document.getElementById('routeCity').textContent = OFFER.name;
+            document.getElementById('statIncome').innerHTML = 'до ' + OFFER.income + '<span class="unit">₽/день</span>';
+            document.getElementById('statBonus').textContent = OFFER.bonus + ' ₽';
+            document.getElementById('bonusBadge').textContent = OFFER.bonus + ' ₽';
+            document.getElementById('trackFill').style.width = '0%';
+            requestAnimationFrame(() => {
+                setTimeout(() => {
+                    document.getElementById('trackFill').style.width = OFFER.progress + '%';
+                }, 50);
+            });
+        }
+
+        function scrollToForm() {
+            document.getElementById('formSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function goToRegistration() {
+            window.open(OFFER.link, '_blank');
+        }
+
+        document.querySelectorAll('.faq-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const wasOpen = item.classList.contains('open');
+                document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+                if (!wasOpen) item.classList.add('open');
+            });
+        });
+
+        applyOffer();
+    </script>
+
+    <a class="support-btn" href="https://t.me/helpingYE_bot" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.38 5.07L2 22l5.07-1.38A9.96 9.96 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2z" fill="currentColor"/>
+            <path d="M8.5 12a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z" fill="var(--paper)"/>
+        </svg>
+        <span>Поддержка</span>
+    </a>
+
+</body>
+
+</html>
